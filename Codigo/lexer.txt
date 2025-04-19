@@ -1,34 +1,44 @@
-OP_CONDICION = if
-OP_ITERACION_CONDICIONAL = while
-OP_ITERACION = for
-OP_LOGICO_AND = AND
-OP_LOGICO_OR = OR
-OP_LOGICO_NOT = NOT
-OP_ASIGNACION = :=
-OP_RESTA = -
-OP_SUMA = +
-OP_MULTIPLICACION = *
-OP_DIVISION = /
-OP_COMENTARIO_INI = #+
-OP_COMENTARIO_FIN = +#
-OP_MAYOR = >
-OP_MENOR = <
-OP_ESCRIBIR = write
-OP_LEER = read
-OP_INICIALIZAR = init
-OP_LLAVE_INICIO = {
-OP_LLAVE_FIN = }
-OP_PARENTESIS_INICIO = (
-OP_PARENTESIS_FIN = )
-OP_COMILLAS = ¨
-OP_DOS_PUNTOS = :
-OP_COMA = ,
-DT_FLOAT = Float
-DT_INT = Int
-DT_STRING = String
-NUMERO = [0-9]+
-FLOTANTE = [NUMERO.NUMERO | NUMERO. | .NUMERO]
-CARACTER = [A-Za-z]
-ESPACIO = [\t\n]+
-STRING = ("|')((?:\\1|(?:(?!\1).))*)\1
-ID = CARACTER[CARACTER | NUMERO]*
+
+[":="] 	{return OP_ASIGNACION ;}
+["-"] 	{return OP_RESTA ;}
+["+"] 	{return OP_SUMA ;}
+["*"] 	{return OP_MULTIPLICACION ;}
+["/"] 	{return OP_DIVISION ;}
+["#+"] 	{return OP_COMENTARIO_INI ;}
+["+#"] 	{return OP_COMENTARIO_FIN ;}
+[">"] 	{return OP_MAYOR ;}
+["<"] 	{return OP_MENOR ;}
+
+
+
+["{"] {return OP_LLAVE_INICIO ;}
+["}"] {return OP_LLAVE_FIN ;}
+["("] {return OP_PARENTESIS_INICIO ;}
+[")"] {return OP_PARENTESIS_FIN ;}
+["¨"] {return OP_COMILLAS ;}
+[":"] {return OP_DOS_PUNTOS ;}
+[","] {return OP_COMA ;}
+
+
+"if" 	{return OP_CONDICION ;}
+"while" {return OP_ITERACION_CONDICIONAL ;}
+"for" 	{return OP_ITERACION ;}
+"AND" 	{return OP_LOGICO_AND ;}
+"OR" 	{return OP_LOGICO_OR ;}
+"NOT" 	{return OP_LOGICO_NOT ;}
+"write" {return OP_ESCRIBIR ;}
+"read" 	{return OP_LEER ;}
+"init" 	{return OP_INICIALIZAR ;}
+
+
+"Float" 	{return DT_FLOAT ;}
+"Int" 		{return DT_INT ;}
+"String" 	{return DT_STRING ;}
+
+
+NUMERO  	[0-9]+
+FLOTANTE 	[{NUMERO}.{NUMERO} | {NUMERO}. | .{NUMERO}]
+CARACTER  	[A-Za-z]
+ESPACIO 	[\t\n]+
+STRING 		("|')((?:\\1|(?:(?!\1).))*)\1
+ID  		{CARACTER[CARACTER | NUMERO]*}
