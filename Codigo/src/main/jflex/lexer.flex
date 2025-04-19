@@ -37,11 +37,17 @@ Plus = "+"
 Mult = "*"
 Sub = "-"
 Div = "/"
-Assig = "="
+Assig = ":="
+BiggerThan = ">"
+LessThan = "<"
 OpenBracket = "("
 CloseBracket = ")"
+OpenComment = "#+"
+CloseComment = "+#"
 Letter = [a-zA-Z]
 Digit = [0-9]
+IfKeyword = "if"
+ElseKeyword = "else"
 
 WhiteSpace = {LineTerminator} | {Identation}
 Identifier = {Letter} ({Letter}|{Digit})*
@@ -66,7 +72,8 @@ IntegerConstant = {Digit}+
   {Assig}                                   { return symbol(ParserSym.ASSIG); }
   {OpenBracket}                             { return symbol(ParserSym.OPEN_BRACKET); }
   {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
-
+  {IfKeyword}                               { return symbol(ParserSym.IF); }
+  {ElseKeyword}                             { return symbol(ParserSym.ELSE); }
   /* whitespace */
   {WhiteSpace}                   { /* ignore */ }
 }

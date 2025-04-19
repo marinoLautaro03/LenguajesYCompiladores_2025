@@ -77,6 +77,7 @@ public class LexerTest {
     assertThat(nextToken()).isEqualTo(ParserSym.CLOSE_BRACKET);
     assertThat(nextToken()).isEqualTo(ParserSym.DIV);
     assertThat(nextToken()).isEqualTo(ParserSym.INTEGER_CONSTANT);
+    assertThat(nextToken()).isEqualTo(ParserSym.IF);
     assertThat(nextToken()).isEqualTo(ParserSym.EOF);
   }
 
