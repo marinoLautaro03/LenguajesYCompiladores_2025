@@ -6,37 +6,87 @@ class Parser;
 
 
 // Terminals
-terminal ASSIG;
-terminal PLUS;
-terminal SUB;
-terminal MULT;
-terminal DIV;
-terminal OPEN_BRACKET;
-terminal CLOSE_BRACKET;
-terminal INTEGER_CONSTANT;
-terminal IDENTIFIER;
-terminal IF, ELSE;
-terminal LPAREN, RPAREN, LBRACE, RBRACE;
+terminal ID;
+terminal CTE_ENTERA;
+terminal CTE_FLOTANTE;
+terminal CTE_CADENA;
+
+terminal OP_SUMA;
+terminal OP_RESTA;
+terminal OP_MULT;
+terminal OP_DIV;
+terminal OP_ASIG;
+terminal OP_TIPO;
+terminal COMP_MEN;
+terminal COMP_MAY;
+
+terminal COMA;
+terminal PAR_ABRIR;
+terminal PAR_CERRAR;
+terminal LLAVE_ABRIR;
+terminal LLAVE_CERRAR;
+
+terminal IF;
+terminal ELSE;
+terminal WHILE;
+terminal FOR;
+terminal AND;
+terminal OR;
+terminal NOT;
+terminal WRITE;
+terminal READ;
+terminal INIT;
+
+terminal DT_FLOAT;
+terminal DT_INT;
+terminal DT_STRING;
 
 // Non Terminals
+non terminal sentences;
 non terminal sentence;
 non terminal assignment;
 non terminal expression;
 non terminal term;
 non terminal factor;
-non terminal IfStatement, Statement, StatementList;
+non terminal condition;
+non terminal block;
+non terminal statement;
+non terminal statement_list;
+non terminal relational_operator;
 
 // Start Symbol Definition
-start with sentence;
+start with sentences;
+
+sentences ::= sentence | sentences sentence ;
+
+sentence ::= IF PAR_ABRIR condition PAR_CERRAR block
+             {: System.out.println("If statement"); :}
+           | IF PAR_ABRIR condition PAR_CERRAR block ELSE block
+             {: System.out.println("If-Else statement"); :};
+
+condition ::= expression relational_operator expression
+              {: System.out.println("Condition evaluated"); :};
+
+relational_operator ::= COMP_MEN | COMP_MAY ;
+
+block ::= LLAVE_ABRIR statement_list LLAVE_CERRAR
+          {: System.out.println("Block executed"); :};
+
+statement_list ::= statement
+                 | statement_list sentence;
 
 sentence ::= assignment {: System.out.println("End"); :};
-assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
-expression ::= expression PLUS term {: System.out.println("+"); :};
-expression ::= expression SUB term {: System.out.println("-"); :};
+assignment ::= ID OP_ASIG expression {: System.out.println("Assignment"); :};
+expression ::= expression OP_SUMA term {: System.out.println("+"); :};
+expression ::= expression OP_RESTA term {: System.out.println("-"); :};
 expression ::= term {: System.out.println("Expression = Term"); :};
-term ::= term MULT factor {: System.out.println("*"); :};
-term ::= term DIV factor {: System.out.println("/"); :};
+term ::= term OP_MULT factor {: System.out.println("*"); :};
+term ::= term OP_DIV factor {: System.out.println("/"); :};
 term ::= factor {: System.out.println("Term = factor"); :};
-factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
-factor ::= INTEGER_CONSTANT:constant {: System.out.println("Constant: " + constant ); :};
-factor ::= OPEN_BRACKET expression CLOSE_BRACKET {: System.out.println("Factor = (Expression)"); :};
+factor ::= ID:id  {: System.out.println("Id: " + id); :};
+factor ::= CTE_ENTERA:constant {: System.out.println("Constant: " + constant ); :};
+factor ::= PAR_ABRIR expression PAR_CERRAR {: System.out.println("Factor = (Expression)"); :};
+
+statement ::= WRITE PAR_ABRIR CTE_CADENA PAR_CERRAR
+                {: System.out.println("Write con string"); :};
+
