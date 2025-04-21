@@ -68,48 +68,51 @@ ESPACIO = {LineTerminator} | {Identation}
 
 <YYINITIAL> {
   /* keywords */
-  "if"           { return symbol(ParserSym.IF); }
-  "else"           { return symbol(ParserSym.ELSE); }
-  "while"            { return symbol(ParserSym.WHILE); }
-  "for"            { return symbol(ParserSym.FOR); }
-  "and"           { return symbol(ParserSym.AND); }
-  "or"            { return symbol(ParserSym.OR); }
-  "not"            { return symbol(ParserSym.NOT); }
-  "write"            { return symbol(ParserSym.WRITE); }
+  "if"              { return symbol(ParserSym.IF); }
+  "else"            { return symbol(ParserSym.ELSE); }
+  "while"           { return symbol(ParserSym.WHILE); }
+  "AND"             { return symbol(ParserSym.AND); }
+  "OR"              { return symbol(ParserSym.OR); }
+  "NOT"             { return symbol(ParserSym.NOT); }
+  "write"           { return symbol(ParserSym.WRITE); }
   "read"            { return symbol(ParserSym.READ); }
   "init"            { return symbol(ParserSym.INIT); }
 
-  "Float" 	{return symbol(ParserSym.DT_FLOAT); }
-  "Int" 		{return symbol(ParserSym.DT_INT); }
-  "String" 	{return symbol(ParserSym.DT_STRING); }
+  "Float" 	        { return symbol(ParserSym.DT_FLOAT); }
+  "Int" 		        { return symbol(ParserSym.DT_INT); }
+  "String" 	        { return symbol(ParserSym.DT_STRING); }
 
   /* identifiers */
-  {ID}                             { return symbol(ParserSym.ID, yytext()); }
+  {ID}              { return symbol(ParserSym.ID, yytext()); }
+
   /* Constants */
-  {CTE_ENTERA}                        { return symbol(ParserSym.CTE_ENTERA, yytext()); }
-  {CTE_FLOTANTE}                        { return symbol(ParserSym.CTE_FLOTANTE, yytext()); }
-  {CTE_CADENA}                        { return symbol(ParserSym.CTE_CADENA, yytext()); }
+  {CTE_ENTERA}      { return symbol(ParserSym.CTE_ENTERA, yytext()); }
+  {CTE_FLOTANTE}    { return symbol(ParserSym.CTE_FLOTANTE, yytext()); }
+  {CTE_CADENA}      { return symbol(ParserSym.CTE_CADENA, yytext()); }
 
   /* operators */
-  {OP_SUMA}                                    { return symbol(ParserSym.OP_SUMA); }
-  {OP_RESTA}                                     { return symbol(ParserSym.OP_RESTA); }
-  {OP_MULT}                                    { return symbol(ParserSym.OP_MULT); }
-  {OP_DIV}                                     { return symbol(ParserSym.OP_DIV); }
-  {OP_ASIG}                                   { return symbol(ParserSym.OP_ASIG); }
-  {OP_TIPO}                                   { return symbol(ParserSym.OP_TIPO); }
-  {COMP_MEN}                                   { return symbol(ParserSym.COMP_MEN); }
-  {COMP_MAY}                                   { return symbol(ParserSym.COMP_MAY); }
+  {OP_SUMA}         { return symbol(ParserSym.OP_SUMA); }
+  {OP_RESTA}        { return symbol(ParserSym.OP_RESTA); }
+  {OP_MULT}         { return symbol(ParserSym.OP_MULT); }
+  {OP_DIV}          { return symbol(ParserSym.OP_DIV); }
+  {OP_ASIG}         { return symbol(ParserSym.OP_ASIG); }
+  {OP_TIPO}         { return symbol(ParserSym.OP_TIPO); }
+  {COMP_MEN}        { return symbol(ParserSym.COMP_MEN); }
+  {COMP_MAY}        { return symbol(ParserSym.COMP_MAY); }
   
   /* others */
-  {COMA}                                   { return symbol(ParserSym.COMA); }
-  {PAR_ABRIR}                             { return symbol(ParserSym.PAR_ABRIR); }
-  {PAR_CERRAR}                            { return symbol(ParserSym.PAR_CERRAR); }
-  {LLAVE_ABRIR}                            { return symbol(ParserSym.LLAVE_ABRIR); }
-  {LLAVE_CERRAR}                            { return symbol(ParserSym.LLAVE_CERRAR); }
+  {COMA}            { return symbol(ParserSym.COMA); }
+  {PAR_ABRIR}       { return symbol(ParserSym.PAR_ABRIR); }
+  {PAR_CERRAR}      { return symbol(ParserSym.PAR_CERRAR); }
+  {LLAVE_ABRIR}     { return symbol(ParserSym.LLAVE_ABRIR); }
+  {LLAVE_CERRAR}    { return symbol(ParserSym.LLAVE_CERRAR); }
 
   /* whitespace */
-  {ESPACIO}                   { /* ignore */ }
+  {ESPACIO}         { /* ignorar */ }
+
+  /* comment */
+  {COMENTARIO}      { /* ignorar */ }
 }
 
 /* error fallback */
-[^]                              { throw new UnknownCharacterException(yytext()); }
+[^]                 { throw new UnknownCharacterException(yytext()); }
