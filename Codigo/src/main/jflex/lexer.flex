@@ -2,6 +2,7 @@ package lyc.compiler;
 
 import java_cup.runtime.Symbol;
 import lyc.compiler.ParserSym;
+import lyc.compiler.symbols.SymbolTable;
 import lyc.compiler.model.*;
 import static lyc.compiler.constants.Constants.*;
 
@@ -83,12 +84,12 @@ ESPACIO = {LineTerminator} | {Identation}
   "String" 	        { return symbol(ParserSym.DT_STRING); }
 
   /* identifiers */
-  {ID}              { return symbol(ParserSym.ID, yytext()); }
+  {ID}              { SymbolTable.insert(yytext(), "ID", yytext()); return symbol(ParserSym.ID, yytext()); }
 
   /* Constants */
-  {CTE_ENTERA}      { return symbol(ParserSym.CTE_ENTERA, yytext()); }
-  {CTE_FLOTANTE}    { return symbol(ParserSym.CTE_FLOTANTE, yytext()); }
-  {CTE_CADENA}      { return symbol(ParserSym.CTE_CADENA, yytext()); }
+  {CTE_ENTERA}      { SymbolTable.insert("_" + yytext(), "Int", yytext()); return symbol(ParserSym.CTE_ENTERA, yytext()); }
+  {CTE_FLOTANTE}    { SymbolTable.insert("_" + yytext(), "Float", yytext()); return symbol(ParserSym.CTE_FLOTANTE, yytext()); }
+  {CTE_CADENA}      { SymbolTable.insert("_" + yytext(), "String", yytext()); return symbol(ParserSym.CTE_CADENA, yytext()); }
 
   /* operators */
   {OP_SUMA}         { return symbol(ParserSym.OP_SUMA); }
