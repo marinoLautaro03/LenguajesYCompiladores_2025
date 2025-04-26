@@ -1,0 +1,45 @@
+╔══════════════════════╦════════════╦══════════════════════╦══════════╗
+║ NOMBRE               ║ TIPODATO   ║ VALOR                ║ LONGITUD ║
+╠══════════════════════╬════════════╬══════════════════════╬══════════╣
+║ _34                  ║ Int        ║ 34                   ║          ║
+║ p1                   ║            ║                      ║          ║
+║ p2                   ║            ║                      ║          ║
+║ _"a no es mas g..."  ║ String     ║ "a no es mas gr..."  ║ 26       ║
+║ p3                   ║            ║                      ║          ║
+║ _-3.0                ║ Float      ║ -3.0                 ║          ║
+║ _-2.0                ║ Float      ║ -2.0                 ║          ║
+║ b1                   ║            ║                      ║          ║
+║ _.9999               ║ Float      ║ .9999                ║          ║
+║ _"amarillo"          ║ String     ║ "amarillo"           ║ 10       ║
+║ _3.5                 ║ Float      ║ 3.5                  ║          ║
+║ _123                 ║ Int        ║ 123                  ║          ║
+║ _99999.99            ║ Float      ║ 99999.99             ║          ║
+║ _500                 ║ Int        ║ 500                  ║          ║
+║ var1                 ║            ║                      ║          ║
+║ _"a es mas chic..."  ║ String     ║ "a es mas chico..."  ║ 28       ║
+║ variable1            ║            ║                      ║          ║
+║ a                    ║            ║                      ║          ║
+║ b                    ║            ║                      ║          ║
+║ _"verde"             ║ String     ║ "verde"              ║ 7        ║
+║ _99.                 ║ Float      ║ 99.                  ║          ║
+║ c                    ║            ║                      ║          ║
+║ _27                  ║ Int        ║ 27                   ║          ║
+║ f                    ║            ║                      ║          ║
+║ _"ewr"               ║ String     ║ "ewr"                ║ 5        ║
+║ _"o b es mas ch..."  ║ String     ║ "o b es mas chi..."  ║ 30       ║
+║ a1                   ║            ║                      ║          ║
+║ _0                   ║ Int        ║ 0                    ║          ║
+║ r                    ║            ║                      ║          ║
+║ _"a es mas gran..."  ║ String     ║ "a es mas grand..."  ║ 47       ║
+║ _1                   ║ Int        ║ 1                    ║          ║
+║ _3                   ║ Int        ║ 3                    ║          ║
+║ _"asldk  fh sjf"     ║ String     ║ "asldk  fh sjf"      ║ 15       ║
+║ _6                   ║ Int        ║ 6                    ║          ║
+║ _"@sdADaSjfla%d..."  ║ String     ║ "@sdADaSjfla%df..."  ║ 17       ║
+║ x                    ║            ║                      ║          ║
+║ _"a es mas gran..."  ║ String     ║ "a es mas grand..."  ║ 23       ║
+║ y                    ║            ║                      ║          ║
+║ z                    ║            ║                      ║          ║
+║ _"a es mas gran..."  ║ String     ║ "a es mas grand..."  ║ 47       ║
+║ base                 ║            ║                      ║          ║
+╚══════════════════════╩════════════╩══════════════════════╩══════════╝
