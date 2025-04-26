@@ -31,7 +31,6 @@ import static lyc.compiler.constants.Constants.*;
 
 
 LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n]
 Identation = [ \t\f]
 
 OP_SUMA = "+"
@@ -58,7 +57,7 @@ COMENTARIO = {COM_INI}.*{COM_FIN}
 ID = {LETRA}({LETRA}|{DIGITO})*
 CTE_CADENA = \"([^\"\\\\]|\\\\.)*\"
 CTE_ENTERA = {DIGITO}+
-CTE_FLOTANTE = {DIGITO}+\.{DIGITO}*|\.{DIGITO}+
+CTE_FLOTANTE = ("-"|"\+")?({DIGITO}+\.{DIGITO}*|\.{DIGITO}+)
 
 ESPACIO = {LineTerminator} | {Identation}
 
@@ -83,13 +82,43 @@ ESPACIO = {LineTerminator} | {Identation}
   "Int" 		        { return symbol(ParserSym.DT_INT); }
   "String" 	        { return symbol(ParserSym.DT_STRING); }
 
+  "sliceAndConcat"       { return symbol(ParserSym.SLICE_AND_CONCAT); }
+  "negativeCalculation"  { return symbol(ParserSym.NEGATIVE_CALCULATION); }
+
   /* identifiers */
-  {ID}              { SymbolTable.insert(yytext(), "ID", yytext()); return symbol(ParserSym.ID, yytext()); }
+  {ID} {
+      if (yytext().length() > MAX_ID_LENGTH) {
+          throw new InvalidLengthException("Identificador demasiado largo (max 20): " + yytext());
+      }
+      SymbolTable.insert(yytext(), "ID", yytext());
+      return symbol(ParserSym.ID, yytext());
+  }
 
   /* Constants */
-  {CTE_ENTERA}      { SymbolTable.insert("_" + yytext(), "Int", yytext()); return symbol(ParserSym.CTE_ENTERA, yytext()); }
-  {CTE_FLOTANTE}    { SymbolTable.insert("_" + yytext(), "Float", yytext()); return symbol(ParserSym.CTE_FLOTANTE, yytext()); }
-  {CTE_CADENA}      { SymbolTable.insert("_" + yytext(), "String", yytext()); return symbol(ParserSym.CTE_CADENA, yytext()); }
+  {CTE_ENTERA} {
+    try {
+        Short.parseShort(yytext());
+    } catch (NumberFormatException e) {
+        throw new InvalidIntegerException("Constante entera fuera del rango de 16 bits: " + yytext());
+    }
+    SymbolTable.insert("_" + yytext(), "Int", yytext()); return symbol(ParserSym.CTE_ENTERA, yytext()); 
+  }
+  {CTE_FLOTANTE} {
+    try {
+        Float.parseFloat(yytext());
+    } catch (NumberFormatException e) {
+        throw new InvalidIntegerException("Constante flotante fuera del rango de 32 bits: " + yytext());
+    }
+    SymbolTable.insert("_" + yytext(), "Float", yytext()); 
+    return symbol(ParserSym.CTE_FLOTANTE, yytext());
+  }
+  {CTE_CADENA} { 
+    String valor = yytext().substring(1, yytext().length() - 1);
+    if (valor.length() > MAX_STRING_LENGTH) {
+        throw new InvalidLengthException("Constante cadena excede los 50 caracteres: " + valor);
+    }
+    SymbolTable.insert("_" + yytext(), "String", yytext()); return symbol(ParserSym.CTE_CADENA, yytext()); 
+  }
 
   /* operators */
   {OP_SUMA}         { return symbol(ParserSym.OP_SUMA); }

@@ -49,7 +49,8 @@ if (a > b AND c > b)
 }
 else
 {
-    write("a es mas chico o igual a b o b es mas chico o igual a c")
+    write("a es mas chico o igual a b")
+    write("o b es mas chico o igual a c")
 }
 
 a := 1
@@ -67,5 +68,42 @@ init {
     p1, p2, p3 : String
 }
 
+y := sliceAndConcat(3, 6, "amarillo", "verde", 0)
 
-#+ Esto es un comentario y se ignora pero no da error de sintáxis +#
+x := negativeCalculation(3.5, -2.0, a, b, -3.0)
+
+#+ Esto es un comentario, se ignora y no da error de sintáxis. +#
+
+#+ A continuacion la seccion con lineas que generan error de compilacion : +#
+#+ 1. Error de string, el literal no está cerrado correctamente. +#
+#+ b := "cadena sin cerrar +#
+
+#+ 2. Error, operación incompleta (falta operando derecho). +#
+#+ a := 10 - +#
+
+#+ 3. Error de sintaxis, falta cerrar el paréntesis. +#
+#+ if (a < b +#
+
+#+ 4. Error léxico, formato incorrecto para un flotante. +#
+#+ c := 10.2.4 +#
+
+#+ 5. Error de sintaxis, símbolo de asignación incorrecto +#
+#+ c = 5 +#
+
+#+ 6. Error de condición incompleta (falta el operando derecho). +#
+#+ if (a > ) +#
+#+ { +#
+#+    write("a es mas grande que b") +#
+#+ } +#
+
+#+ 7. Error, "write" solo permite cadenas o variables, no expresiones. +#
+#+ write(a + b) +#
+
+#+ 8. Error, falta el bloque {} para la sentencia del if. +#
+#+ if (a > b) write("Sin bloque") +#
+
+#+ 9. Error, if con doble condición +#
+#+ if (a > b > c) {write("Doble condición")} +#
+
+#+ 10. Constante entera fuera de rango +#
+#+ c := "Esto es un string que tiene que superar los cincuenta caracteres de largo." +#

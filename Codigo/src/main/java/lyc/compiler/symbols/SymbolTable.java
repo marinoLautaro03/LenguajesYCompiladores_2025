@@ -31,7 +31,7 @@ public class SymbolTable {
         for (SymbolEntry s : table.values()) {
             String nombreMostrado = s.nombre;
             String valorMostrado = s.valor;
-            if ("String".equals(s.tipoDato) && s.valor.length() > 10) {
+            if ("String".equals(s.tipoDato) && s.valor.length() > 15) {
                 nombreMostrado = s.nombre.substring(0, 15);
                 nombreMostrado = nombreMostrado + "...\"";
                 valorMostrado = s.valor.substring(0, 15);
