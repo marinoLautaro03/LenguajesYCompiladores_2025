@@ -57,7 +57,7 @@ COMENTARIO = {COM_INI}.*{COM_FIN}
 ID = {LETRA}({LETRA}|{DIGITO})*
 CTE_CADENA = \"([^\"\\\\]|\\\\.)*\"
 CTE_ENTERA = {DIGITO}+
-CTE_FLOTANTE = ("-"|"\+")?({DIGITO}+\.{DIGITO}*|\.{DIGITO}+)
+CTE_FLOTANTE = "-"?({DIGITO}+\.{DIGITO}*|\.{DIGITO}+)
 
 ESPACIO = {LineTerminator} | {Identation}
 
