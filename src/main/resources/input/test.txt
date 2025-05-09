@@ -1,76 +1,78 @@
+init {
+    a, b, d, z : Float
+    c1, c2, c3, x : Int
+    b, base, y : String
+}
+
 a := 99999.99
 a := 99.
 a := .9999
 b := "@sdADaSjfla%dfg"
 b := "asldk  fh sjf"
-c := 123
+c1 := 10
+c2 := 456
+c3 := 500
 
-x := 27 - c
-x := r + 500
+x := 27 - c1
+x := c1 + 500
 x := 34 * 3
-x := z / f
+d := c2 / c1
 
 write("ewr")
-write(var1)
+write(b)
 read(base)
 
-if (a > b)
+if (c1 > c2)
 {
-    write("a es mas grande que b")
+    write("c1 es mas grande que c2")
 }
 
-if (a > b)
+if (c1 > c2)
 {
-    write("a es mas grande que b")
+    write("c1 es mas grande que c2")
 }
 else
 {
-    write("a es mas chico o igual a b")
+    write("c1 es mas chico o igual a c2")
 }
 
-if (a > b AND c > b)
+if (c1 > c2 AND c3 > c2)
 {
-    write("a es mas grande que b y c es mas grande que b")
+    write("c1 es mas grande que c2 y c3 es mas grande que c2")
 }
 
-if (a > b OR c > b)
+if (c1 > c2 OR c3 > c2)
 {
-    write("a es mas grande que b o c es mas grande que b")
+    write("c1 es mas grande que c2 o c3 es mas grande que c2")
 }
 
-if (NOT a > b)
+if (NOT c1 > c2)
 {
-    write("a no es mas grande que b")
+    write("c1 no es mas grande que c2")
 }
 
-if (a > b AND c > b)
+if (c1 > c2 AND c3 > c2)
 {
-    write("a es mas grande que b y c es mas grande que b")
+    write("c1 es mas grande que c2 y c3 es mas grande que c2")
 }
 else
 {
-    write("a es mas chico o igual a b")
-    write("o b es mas chico o igual a c")
+    write("c1 es mas chico o igual a c2")
+    write("o c3 es mas chico o igual a c2")
 }
 
-a := 1
-b := 3
+c1 := 1
+c2 := 3
 
-while (a > b)
+while (c1 > c2)
 {
-    write("a es mas grande que b")
-    a := a + 1
-}
-
-init {
-    a1, b1 : Float
-    variable1 : Int
-    p1, p2, p3 : String
+    write("c1 es mas grande que c2")
+    c1 := c1 + 1
 }
 
 y := sliceAndConcat(3, 6, "amarillo", "verde", 0)
 
-x := negativeCalculation(3.5, -2.0, a, b, -3.0)
+z := negativeCalculation(3.5, -2.0, a, b, -3.0)
 
 #+ Esto es un comentario, se ignora y no da error de sintáxis. +#
 
