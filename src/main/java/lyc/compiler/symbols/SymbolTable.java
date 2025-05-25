@@ -25,9 +25,9 @@ public class SymbolTable {
 
     public static String dump() {
         StringBuilder sb = new StringBuilder();
-        sb.append("╔══════════════════════╦════════════╦══════════════════════╦══════════╗\n");
-        sb.append(String.format("║ %-20s ║ %-10s ║ %-20s ║ %-8s ║\n", "NOMBRE", "TIPODATO", "VALOR", "LONGITUD"));
-        sb.append("╠══════════════════════╬════════════╬══════════════════════╬══════════╣\n");
+        sb.append("╔══════════════════════════════════════════════════════╦══════════════╦══════════════════════════════════════════════════════╦══════════╗\n");
+        sb.append(String.format("║ %-52s ║ %-12s ║ %-52s ║ %-8s ║\n", "NOMBRE", "TIPODATO", "VALOR", "LONGITUD"));
+        sb.append("╠══════════════════════════════════════════════════════╬══════════════╬══════════════════════════════════════════════════════╬══════════╣\n");
         for (SymbolEntry s : table.values()) {
             String nombreMostrado = s.nombre;
             String valorMostrado = s.valor;
@@ -37,10 +37,10 @@ public class SymbolTable {
                 valorMostrado = s.valor.substring(0, 15);
                 valorMostrado = valorMostrado + "...\"";
             }
-            sb.append(String.format("║ %-20s ║ %-10s ║ %-20s ║ %-8s ║\n",
+            sb.append(String.format("║ %-52s ║ %-12s ║ %-52s ║ %-8s ║\n",
                 nombreMostrado, s.tipoDato, valorMostrado, s.longitud));
         }
-        sb.append("╚══════════════════════╩════════════╩══════════════════════╩══════════╝\n");
+        sb.append("╚══════════════════════════════════════════════════════╩══════════════╩══════════════════════════════════════════════════════╩══════════╝\n");
         return sb.toString();
     }
 }

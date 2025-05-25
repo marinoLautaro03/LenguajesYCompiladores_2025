@@ -4,6 +4,10 @@ import java_cup.runtime.*;
 
 class Parser;
 
+parser code {:
+    public static lyc.compiler.polaca.Polaca polaca = new lyc.compiler.polaca.Polaca();
+:};
+
 // Terminals
 terminal ID;
 terminal CTE_ENTERA;
@@ -66,7 +70,11 @@ sentencia ::= declaracion
             | io;
 
 declaracion ::= INIT LLAVE_ABRIR lista_declaraciones LLAVE_CERRAR
-                {: System.out.println("Bloque de declaracion de variables"); :};
+                {: 
+                    polaca.insertarEnPolaca(id);
+                    polaca.insertarEnPolaca(":=");
+                    System.out.println("Bloque de declaracion de variables"); 
+                :};
 
 lista_declaraciones ::= declaracion_simple
                       | lista_declaraciones declaracion_simple;
@@ -74,48 +82,88 @@ lista_declaraciones ::= declaracion_simple
 declaracion_simple ::= lista_variables OP_TIPO tipo_variable;
 
 lista_variables ::= lista_variables COMA ID:id
-                    {: System.out.println("Declaracion anidada (,) " + id); :}
+                    {: 
+                        System.out.println("Declaracion anidada (,) " + id); 
+                    :}
                 | ID:id
-                    {: System.out.println("Id: " + id); :};
+                    {: 
+                        System.out.println("Id: " + id); 
+                    :};
 
 tipo_variable ::= DT_FLOAT
-                    {: System.out.println("Declaracion Float"); :}
+                    {: 
+                        System.out.println("Declaracion Float"); 
+                    :}
                 | DT_INT
-                    {: System.out.println("Declaracion Int"); :}
+                    {: 
+                        System.out.println("Declaracion Int"); 
+                    :}
                 | DT_STRING
-                    {: System.out.println("Declaracion String"); :};
+                    {: 
+                        System.out.println("Declaracion String"); 
+                    :};
 
 asignacion ::= ID:id OP_ASIG expresion
-                {: System.out.println("Id: '" + id + "' Asignacion \n"); :}
+                {: 
+                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                :}
             | ID:id OP_ASIG slice_and_concat
-                {: System.out.println("Id: '" + id + "' Asignacion \n"); :}
+                {: 
+                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                :}
             | ID:id OP_ASIG negative_calculation
-                {: System.out.println("Id: '" + id + "' Asignacion \n"); :};
+                {: 
+                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                :};
 
 expresion ::= expresion OP_SUMA termino
-              {: System.out.println("Suma"); :}
+              {: 
+                polaca.insertarEnPolaca("+");
+                System.out.println("Suma"); 
+              :}
             | expresion OP_RESTA termino
-                {: System.out.println("Resta"); :}
+                {: 
+                    polaca.insertarEnPolaca("-");
+                    System.out.println("Resta"); 
+                :}
             | termino
                 {: System.out.println("Expresion simple"); :};
 
 termino ::= termino OP_MULT factor
-             {: System.out.println("Multiplicacion"); :}
+             {: 
+                polaca.insertarEnPolaca("*");
+                System.out.println("Multiplicacion"); 
+            :}
             | termino OP_DIV factor
-                {: System.out.println("Division"); :}
+                {: 
+                    polaca.insertarEnPolaca("/");
+                    System.out.println("Division"); 
+                :}
             | factor
                 {: System.out.println("Termino simple"); :};
 
 factor ::= constante
             | ID:id
-                {: System.out.println("Id: " + id); :};
+                {: 
+                    polaca.insertarEnPolaca(id);
+                    System.out.println("Id: " + id); 
+                :};
 
 constante ::= CTE_ENTERA:entero
-                {: System.out.println("Cte entera: " + entero); :}
+                {: 
+                    polaca.insertarEnPolaca(entero);
+                    System.out.println("Cte entera: " + entero); 
+                :}
             | CTE_FLOTANTE:flotante
-                {: System.out.println("Cte flotante: " + flotante); :}
+                {: 
+                    polaca.insertarEnPolaca(flotante);
+                    System.out.println("Cte flotante: " + flotante); 
+                :}
             | CTE_CADENA:cadena
-                {: System.out.println("Cte cadena: " + cadena); :};
+                {: 
+                    polaca.insertarEnPolaca(cadena);
+                    System.out.println("Cte cadena: " + cadena); 
+                :};
 
 io ::= lectura
     | escritura;
