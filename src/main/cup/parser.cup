@@ -81,10 +81,12 @@ declaracion_simple ::= lista_variables OP_TIPO tipo_variable;
 
 lista_variables ::= lista_variables COMA ID:id
                     {: 
+                        polaca.insertarEnPolaca(id);
                         System.out.println("Declaracion anidada (,) " + id); 
                     :}
                 | ID:id
                     {: 
+                        polaca.insertarEnPolaca(id);
                         System.out.println("Id: " + id); 
                     :};
 
@@ -102,17 +104,20 @@ tipo_variable ::= DT_FLOAT
                     :};
 
 asignacion ::= ID:id OP_ASIG expresion
-                {: 
+                {:  
+                    polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":=");
                     System.out.println("Id: '" + id + "' Asignacion \n"); 
                 :}
             | ID:id OP_ASIG slice_and_concat
                 {: 
+                    polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":=");
                     System.out.println("Id: '" + id + "' Asignacion \n"); 
                 :}
             | ID:id OP_ASIG negative_calculation
                 {:
+                    polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":="); 
                     System.out.println("Id: '" + id + "' Asignacion \n"); 
                 :};
@@ -172,7 +177,10 @@ io ::= lectura
     | escritura;
 
 lectura ::= READ PAR_ABRIR ID:id PAR_CERRAR
-                {: System.out.println("Lectura de variable: " + id + "\n"); :};
+                {: 
+                    polaca.insertarEnPolaca(id);
+                    System.out.println("Lectura de variable: " + id + "\n"); 
+                :};
 
 escritura ::= WRITE PAR_ABRIR CTE_CADENA:cadena PAR_CERRAR
                 {: 
