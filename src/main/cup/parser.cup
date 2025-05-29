@@ -233,9 +233,9 @@ condicion ::= expresion_logica
 
 expresion_logica ::= expresion operador_relacional expresion
                         {: System.out.println("Condicion simple"); :}
-                  | expresion operador_relacional expresion AND expresion operador_relacional expresion
+                  | expresion_logica AND expresion operador_relacional expresion
                         {: System.out.println("Condicion con AND"); :}
-                  | expresion operador_relacional expresion OR expresion operador_relacional expresion
+                  | expresion_logica OR expresion operador_relacional expresion 
                         {: System.out.println("Condicion con OR"); :};
 
 operador_relacional ::= COMP_MEN
