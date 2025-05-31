@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Polaca {
     private static final List<String> elementos = new ArrayList<>();
+    private static int contadorEtiquetas = 0;
 
     public static void insertarEnPolaca(Object elemento) {
         elementos.add(elemento.toString());
@@ -24,5 +25,13 @@ public class Polaca {
 
     public static List<String> getElementos() {
         return elementos;
+    }
+
+    public static String nuevaEtiqueta() {
+        return "L" + contadorEtiquetas++;
+    }
+
+    public static void insertarEtiquetaDefinicion(String etiqueta) {
+        elementos.add(etiqueta + ":");
     }
 }

@@ -1,11 +1,14 @@
 package lyc.compiler;
 
 import java_cup.runtime.*;
+import java.util.Stack;
+import lyc.compiler.polaca.Polaca;
 
 class Parser;
 
 parser code {:
     public static lyc.compiler.polaca.Polaca polaca = new lyc.compiler.polaca.Polaca();
+    private Stack<String> pilaEtiquetas = new Stack<>(); // Pila para manejar etiquetas del IF
 :};
 
 // Terminals
@@ -54,13 +57,14 @@ non terminal expresion, termino, factor, constante; // operaciones
 non terminal condicion, expresion_logica, operador_relacional; // if - while
 non terminal lista_parametros_neg_calc, parametro_neg_calc; // negative_calculation
 non terminal lectura, escritura; // io
+non terminal else_opcional;
 
 // Start Symbol Definition
 start with programa;
 
 programa ::= lista_sentencia;
 
-lista_sentencia ::= lista_sentencia sentencia 
+lista_sentencia ::= lista_sentencia sentencia
                     | sentencia;
 
 sentencia ::= declaracion
@@ -70,8 +74,8 @@ sentencia ::= declaracion
             | io;
 
 declaracion ::= INIT LLAVE_ABRIR lista_declaraciones LLAVE_CERRAR
-                {:  
-                    System.out.println("Bloque de declaracion de variables"); 
+                {:
+                    System.out.println("Bloque de declaracion de variables");
                 :};
 
 lista_declaraciones ::= declaracion_simple
@@ -80,142 +84,167 @@ lista_declaraciones ::= declaracion_simple
 declaracion_simple ::= lista_variables OP_TIPO tipo_variable;
 
 lista_variables ::= lista_variables COMA ID:id
-                    {: 
+                    {:
                         polaca.insertarEnPolaca(id);
-                        System.out.println("Declaracion anidada (,) " + id); 
+                        System.out.println("Declaracion anidada (,) " + id);
                     :}
                 | ID:id
-                    {: 
+                    {:
                         polaca.insertarEnPolaca(id);
-                        System.out.println("Id: " + id); 
+                        System.out.println("Id: " + id);
                     :};
 
 tipo_variable ::= DT_FLOAT
-                    {: 
-                        System.out.println("Declaracion Float"); 
+                    {:
+                        System.out.println("Declaracion Float");
                     :}
                 | DT_INT
-                    {: 
-                        System.out.println("Declaracion Int"); 
+                    {:
+                        System.out.println("Declaracion Int");
                     :}
                 | DT_STRING
-                    {: 
-                        System.out.println("Declaracion String"); 
+                    {:
+                        System.out.println("Declaracion String");
                     :};
 
 asignacion ::= ID:id OP_ASIG expresion
-                {:  
+                {:
                     polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":=");
-                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                    System.out.println("Id: '" + id + "' Asignacion \n");
                 :}
             | ID:id OP_ASIG slice_and_concat
-                {: 
+                {:
                     polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":=");
-                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                    System.out.println("Id: '" + id + "' Asignacion \n");
                 :}
             | ID:id OP_ASIG negative_calculation
                 {:
                     polaca.insertarEnPolaca(id);
-                    polaca.insertarEnPolaca(":="); 
-                    System.out.println("Id: '" + id + "' Asignacion \n"); 
+                    polaca.insertarEnPolaca(":=");
+                    System.out.println("Id: '" + id + "' Asignacion \n");
                 :};
 
 expresion ::= expresion OP_SUMA termino
-              {: 
+              {:
                 polaca.insertarEnPolaca("+");
-                System.out.println("Suma"); 
+                System.out.println("Suma");
               :}
             | expresion OP_RESTA termino
-                {: 
+                {:
                     polaca.insertarEnPolaca("-");
-                    System.out.println("Resta"); 
+                    System.out.println("Resta");
                 :}
             | termino
                 {: System.out.println("Expresion simple"); :};
 
 termino ::= termino OP_MULT factor
-             {: 
+             {:
                 polaca.insertarEnPolaca("*");
-                System.out.println("Multiplicacion"); 
+                System.out.println("Multiplicacion");
             :}
             | termino OP_DIV factor
-                {: 
+                {:
                     polaca.insertarEnPolaca("/");
-                    System.out.println("Division"); 
+                    System.out.println("Division");
                 :}
             | factor
-                {:                     
-                    System.out.println("Termino simple"); 
+                {:
+                    System.out.println("Termino simple");
                 :};
 
 factor ::= constante
             | ID:id
-                {: 
+                {:
                     polaca.insertarEnPolaca(id);
-                    System.out.println("Id: " + id); 
+                    System.out.println("Id: " + id);
                 :};
 
 constante ::= CTE_ENTERA:entero
-                {: 
+                {:
                     polaca.insertarEnPolaca(entero);
-                    System.out.println("Cte entera: " + entero); 
+                    System.out.println("Cte entera: " + entero);
                 :}
             | CTE_FLOTANTE:flotante
-                {: 
+                {:
                     polaca.insertarEnPolaca(flotante);
-                    System.out.println("Cte flotante: " + flotante); 
+                    System.out.println("Cte flotante: " + flotante);
                 :}
             | CTE_CADENA:cadena
-                {: 
+                {:
                     polaca.insertarEnPolaca(cadena);
-                    System.out.println("Cte cadena: " + cadena); 
+                    System.out.println("Cte cadena: " + cadena);
                 :};
 
 io ::= lectura
     | escritura;
 
 lectura ::= READ PAR_ABRIR ID:id PAR_CERRAR
-                {: 
+                {:
                     polaca.insertarEnPolaca(id);
-                    System.out.println("Lectura de variable: " + id + "\n"); 
+                    System.out.println("Lectura de variable: " + id + "\n");
                 :};
 
 escritura ::= WRITE PAR_ABRIR CTE_CADENA:cadena PAR_CERRAR
-                {: 
+                {:
                     polaca.insertarEnPolaca(cadena);
-                    System.out.println("Imprimir cadena: " + cadena); 
+                    System.out.println("Imprimir cadena: " + cadena);
                 :}
             | WRITE PAR_ABRIR ID:id PAR_CERRAR
-                {: 
+                {:
                     polaca.insertarEnPolaca(id);
-                    System.out.println("Imprimir variable: " + id); 
+                    System.out.println("Imprimir variable: " + id);
                 :};
 
-if ::= IF PAR_ABRIR condicion PAR_CERRAR LLAVE_ABRIR lista_sentencia LLAVE_CERRAR
-        {: 
-            polaca.insertarEnPolaca("if");
-            System.out.println("IF con bloque \n");
+if ::= IF PAR_ABRIR condicion PAR_CERRAR
+        {:
+            String etiquetaSaltoSiFalso = Polaca.nuevaEtiqueta();
+            pilaEtiquetas.push(etiquetaSaltoSiFalso);
+            polaca.insertarEnPolaca(etiquetaSaltoSiFalso);
+            polaca.insertarEnPolaca("BF");
+            System.out.println("IF (condicion) -> Salto BF a " + etiquetaSaltoSiFalso);
         :}
-    | IF PAR_ABRIR condicion PAR_CERRAR LLAVE_ABRIR lista_sentencia LLAVE_CERRAR ELSE LLAVE_ABRIR lista_sentencia LLAVE_CERRAR
-        {: 
-            polaca.insertarEnPolaca("if");
-            polaca.insertarEnPolaca("else");
-            System.out.println("IF-ELSE con bloques \n"); 
-        :};
+        LLAVE_ABRIR lista_sentencia LLAVE_CERRAR
+        else_opcional
+        ;
+
+else_opcional ::= ELSE
+                    {:
+                        String etiquetaFinIf = Polaca.nuevaEtiqueta();
+                        polaca.insertarEnPolaca(etiquetaFinIf);
+                        polaca.insertarEnPolaca("BI");
+
+                        String etiquetaSaltoSiFalso = pilaEtiquetas.pop();
+                        Polaca.insertarEtiquetaDefinicion(etiquetaSaltoSiFalso);
+                        pilaEtiquetas.push(etiquetaFinIf);
+                        System.out.println("ELSE -> Salto BI a " + etiquetaFinIf + ", Define " + etiquetaSaltoSiFalso);
+                    :}
+                    LLAVE_ABRIR lista_sentencia LLAVE_CERRAR
+                    {:
+                        String etiquetaFinIf = pilaEtiquetas.pop();
+                        Polaca.insertarEtiquetaDefinicion(etiquetaFinIf);
+                        System.out.println("FIN ELSE -> Define " + etiquetaFinIf);
+                    :}
+                | // Caso epsilon: No hay ELSE
+                    {:
+                        String etiquetaSaltoSiFalso = pilaEtiquetas.pop();
+                        Polaca.insertarEtiquetaDefinicion(etiquetaSaltoSiFalso);
+                        System.out.println("FIN IF (sin ELSE) -> Define " + etiquetaSaltoSiFalso);
+                    :}
+                ;
 
 while ::= WHILE PAR_ABRIR condicion PAR_CERRAR LLAVE_ABRIR lista_sentencia LLAVE_CERRAR
             {: System.out.println("WHILE con condicion y bloque \n"); :};
 
 slice_and_concat ::= SLICE_AND_CONCAT PAR_ABRIR CTE_ENTERA:param1 COMA CTE_ENTERA:param2 COMA CTE_CADENA:param3 COMA CTE_CADENA:param4 COMA CTE_ENTERA:param5 PAR_CERRAR
-                        {: 
+                        {:
                             polaca.insertarEnPolaca(param1);
                             polaca.insertarEnPolaca(param2);
                             polaca.insertarEnPolaca(param3);
                             polaca.insertarEnPolaca(param4);
-                            polaca.insertarEnPolaca(param5);                            
-                            System.out.println("\nLlamado a sliceAndConcat " + param1 + ", " + param2 + ", " + param3 + ", " + param4 + ", " + param5); 
+                            polaca.insertarEnPolaca(param5);
+                            System.out.println("\nLlamado a sliceAndConcat " + param1 + ", " + param2 + ", " + param3 + ", " + param4 + ", " + param5);
                         :};
 
 negative_calculation ::= NEGATIVE_CALCULATION PAR_ABRIR lista_parametros_neg_calc PAR_CERRAR
@@ -225,34 +254,43 @@ lista_parametros_neg_calc ::= parametro_neg_calc
                             | lista_parametros_neg_calc COMA parametro_neg_calc;
 
 parametro_neg_calc ::= ID:id
-                        {: 
+                        {:
                             polaca.insertarEnPolaca(id);
-                            System.out.println("Parametro variable: " + id); 
+                            System.out.println("Parametro variable: " + id);
                         :}
                      | CTE_FLOTANTE:valor
-                        {: 
+                        {:
                             polaca.insertarEnPolaca(valor);
-                            System.out.println("Parametro constante: " + valor); 
+                            System.out.println("Parametro constante: " + valor);
                         :};
 
 condicion ::= expresion_logica
             | NOT expresion_logica
-                {: System.out.println("Condicion con NOT"); :};
+                {:
+                  polaca.insertarEnPolaca("NOT");
+                  System.out.println("Condicion con NOT");
+                :};
 
 expresion_logica ::= expresion operador_relacional expresion
                         {: System.out.println("Condicion simple"); :}
                   | expresion operador_relacional expresion AND expresion operador_relacional expresion
-                        {: System.out.println("Condicion con AND"); :}
-                  | expresion operador_relacional expresion OR expresion operador_relacional expresion 
-                        {: System.out.println("Condicion con OR"); :};
+                        {:
+                           polaca.insertarEnPolaca("AND");
+                           System.out.println("Condicion con AND");
+                        :}
+                  | expresion operador_relacional expresion OR expresion operador_relacional expresion
+                        {:
+                           polaca.insertarEnPolaca("OR");
+                           System.out.println("Condicion con OR");
+                        :};
 
 operador_relacional ::= COMP_MEN
-                        {: 
+                        {:
                             polaca.insertarEnPolaca("<");
-                            System.out.println("Operador <"); 
+                            System.out.println("Operador <");
                         :}
                     | COMP_MAY
-                        {: 
+                        {:
                             polaca.insertarEnPolaca(">");
-                            System.out.println("Operador >"); 
+                            System.out.println("Operador >");
                         :};
