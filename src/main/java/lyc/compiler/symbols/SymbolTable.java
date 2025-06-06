@@ -13,11 +13,13 @@ public class SymbolTable {
                 tipoDato = "";
                 valor = "";
                 longitud = "";
-            } else if ("String".equals(tipoDato)) {
+            } 
+            else if ("CTE_CADENA".equals(tipoDato)) 
                 longitud = String.valueOf(valor.length());
-            } else {
-                longitud = "";
-            }
+            else if ("String".equals(tipoDato)) 
+                longitud = String.valueOf(valor.length());
+            else 
+                longitud = "";            
 
             table.put(nombre, new SymbolEntry(nombre, tipoDato, valor, longitud));
         }
