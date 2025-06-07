@@ -232,6 +232,7 @@ else_opcional ::= ELSE
                         Polaca.insertarEtiquetaDefinicion(etiquetaSaltoSiFalso);
                         System.out.println("FIN IF (sin ELSE) -> Define " + etiquetaSaltoSiFalso);
                     :}
+                | ELSE if
                 ;
 
 while ::= WHILE PAR_ABRIR condicion PAR_CERRAR LLAVE_ABRIR lista_sentencia LLAVE_CERRAR

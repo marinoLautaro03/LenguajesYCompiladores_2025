@@ -64,6 +64,16 @@ else
 c1 := 1
 c2 := 3
 
+if(c1 < c2){
+	write("Todavia no se anida")
+}
+else if(c1 > c2){
+	write("Apa, se esta anidando")
+}
+else{
+	write("Creo que funciona el anidamiento")
+}
+
 while (c1 > c2)
 {
     write("c1 es mas grande que c2")
