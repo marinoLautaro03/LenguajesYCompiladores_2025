@@ -15,8 +15,8 @@ c3 := 500
 
 x := 27 - c1
 x := c1 + 500
-x := 34 * 3
-d := c2 / c1
+x := c1 * c3
+d := a / z
 
 write("ewr")
 write(b)

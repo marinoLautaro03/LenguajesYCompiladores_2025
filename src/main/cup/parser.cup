@@ -10,6 +10,7 @@ parser code {:
     public static lyc.compiler.polaca.Polaca polaca = new lyc.compiler.polaca.Polaca();
     private Stack<Object> variables = new Stack<Object>();
     private Stack<String> pilaEtiquetas = new Stack<>(); // Pila para manejar etiquetas del IF
+    private Stack<String> pilaTipos = new Stack<>();
 :};
 
 // Terminals
@@ -121,6 +122,18 @@ tipo_variable ::= DT_FLOAT
 
 asignacion ::= ID:id OP_ASIG expresion
                 {:
+
+                    String tipoVar = lyc.compiler.symbols.SymbolTable.getTipo(id);
+                    if (tipoVar == null || tipoVar == "") {
+                        throw new RuntimeException("Error: variable '" + id + "' no declarada.");
+                    }
+
+                    String tipoValor = pilaTipos.pop();
+                    System.out.println("Se esta por comparar " + tipoVar + " Con el tipo: " + tipoValor);
+                    if (!tipoVar.equals(tipoValor)) {
+                        throw new RuntimeException("Error de tipo: no se puede asignar valor de tipo '" + tipoValor + "' a variable '" + id + "' de tipo '" + tipoVar + "'");
+                    }
+
                     polaca.insertarEnPolaca(id);
                     polaca.insertarEnPolaca(":=");
                     System.out.println("Id: '" + id + "' Asignacion \n");
@@ -169,22 +182,30 @@ termino ::= termino OP_MULT factor
 factor ::= constante
             | ID:id
                 {:
+                    String tipo = lyc.compiler.symbols.SymbolTable.getTipo(id);
+                    if (tipo == null) {
+                        throw new RuntimeException("Error: variable '" + id + "' no declarada.");
+                    }
+                    pilaTipos.push(tipo);                    
                     polaca.insertarEnPolaca(id);
                     System.out.println("Id: " + id);
                 :};
 
 constante ::= CTE_ENTERA:entero
                 {:
+                    pilaTipos.push("Int");
                     polaca.insertarEnPolaca(entero);
                     System.out.println("Cte entera: " + entero);
                 :}
             | CTE_FLOTANTE:flotante
                 {:
+                    pilaTipos.push("Float");
                     polaca.insertarEnPolaca(flotante);
                     System.out.println("Cte flotante: " + flotante);
                 :}
             | CTE_CADENA:cadena
                 {:
+                    pilaTipos.push("String");
                     polaca.insertarEnPolaca(cadena);
                     System.out.println("Cte cadena: " + cadena);
                 :};

@@ -34,6 +34,13 @@ public class SymbolTable {
         }
     }
 
+    public static String getTipo(Object nombre) {
+        SymbolEntry entry = table.get(nombre);
+        if (entry != null)
+            return entry.tipoDato;
+        
+        throw new RuntimeException("Error: identificador '" + nombre + "' no encontrado en tabla de símbolos.");
+    }
     public static String dump() {
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════╦══════════════╦══════════════════════════════════════════════════════╦══════════╗\n");
