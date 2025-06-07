@@ -25,6 +25,15 @@ public class SymbolTable {
         }
     }
 
+    public static void setTipo(Object nombre, Object tipo) {
+        SymbolEntry entry = table.get((String)nombre);
+        if (entry != null) {
+            entry.tipoDato = (String)tipo;
+        } else {
+            System.err.println("Error: identificador '" + nombre + "' no encontrado en tabla de símbolos.");
+        }
+    }
+
     public static String dump() {
         StringBuilder sb = new StringBuilder();
         sb.append("╔══════════════════════════════════════════════════════╦══════════════╦══════════════════════════════════════════════════════╦══════════╗\n");

@@ -8,6 +8,7 @@ class Parser;
 
 parser code {:
     public static lyc.compiler.polaca.Polaca polaca = new lyc.compiler.polaca.Polaca();
+    private Stack<Object> variables = new Stack<Object>();
     private Stack<String> pilaEtiquetas = new Stack<>(); // Pila para manejar etiquetas del IF
 :};
 
@@ -81,29 +82,40 @@ declaracion ::= INIT LLAVE_ABRIR lista_declaraciones LLAVE_CERRAR
 lista_declaraciones ::= declaracion_simple
                       | lista_declaraciones declaracion_simple;
 
-declaracion_simple ::= lista_variables OP_TIPO tipo_variable;
+declaracion_simple ::= lista_variables OP_TIPO tipo_variable:tipo
+                    {:
+                        for (Object IdUtilizar : variables) {
+                            lyc.compiler.symbols.SymbolTable.setTipo(IdUtilizar, tipo);                            
+                        }
+                        variables = new Stack<Object>(); 
+                    :};
 
 lista_variables ::= lista_variables COMA ID:id
                     {:
                         polaca.insertarEnPolaca(id);
+                        variables.push(id);                                                
                         System.out.println("Declaracion anidada (,) " + id);
                     :}
                 | ID:id
                     {:
+                        variables.push(id);                        
                         polaca.insertarEnPolaca(id);
                         System.out.println("Id: " + id);
                     :};
 
 tipo_variable ::= DT_FLOAT
                     {:
+                        RESULT = "Float";
                         System.out.println("Declaracion Float");
                     :}
                 | DT_INT
                     {:
+                        RESULT = "Int";
                         System.out.println("Declaracion Int");
                     :}
                 | DT_STRING
                     {:
+                        RESULT = "String";
                         System.out.println("Declaracion String");
                     :};
 
@@ -183,17 +195,20 @@ io ::= lectura
 lectura ::= READ PAR_ABRIR ID:id PAR_CERRAR
                 {:
                     polaca.insertarEnPolaca(id);
+                    polaca.insertarEnPolaca("READ");
                     System.out.println("Lectura de variable: " + id + "\n");
                 :};
 
 escritura ::= WRITE PAR_ABRIR CTE_CADENA:cadena PAR_CERRAR
                 {:
                     polaca.insertarEnPolaca(cadena);
+                    polaca.insertarEnPolaca("WRITE");
                     System.out.println("Imprimir cadena: " + cadena);
                 :}
             | WRITE PAR_ABRIR ID:id PAR_CERRAR
                 {:
                     polaca.insertarEnPolaca(id);
+                    polaca.insertarEnPolaca("WRITE");
                     System.out.println("Imprimir variable: " + id);
                 :};
 
